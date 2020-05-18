@@ -1,0 +1,19 @@
+{
+  "name": "js-excelapp",
+  "version": "1.0.0",
+  "description": "## Need to realize",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlMuz/JS-ExcelApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlMuz/JS-ExcelApp/issues"
+  },
+  "homepage": "https://github.com/AlMuz/JS-ExcelApp#readme"
+}
