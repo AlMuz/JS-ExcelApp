@@ -2,7 +2,7 @@ import { $ } from '@core/DOM'
 
 export class Excel {
 	constructor(selector, options) {
-		this.$el = document.querySelector(selector)
+		this.$el = $(selector)
 		this.components = options.components || []
 	}
 
@@ -18,7 +18,7 @@ export class Excel {
 			const component = new Component($el)
 
 			// getting components template
-			$el.innerHTML = component.toHTML()
+			$el.html(component.toHTML())
 
 			// adding it to the root
 			$root.append($el)
