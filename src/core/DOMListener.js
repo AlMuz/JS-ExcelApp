@@ -23,11 +23,22 @@ export class DOMListener {
             }
 
             // else assign listener and transfer to it this context
-            this.$root.on(listener, this[method].bind(this))
+            this[method] = this[method].bind(this)
+            this.$root.on(listener, this[method])
         })
 	}
 
-	removeDOMListeners() {}
+	removeDOMListeners() {
+        // going through all listeners
+		this.listeners.forEach((listener) => {
+
+            // getting methods name in format 'onMethod'
+            const method = getMethodName(capitalize(listener))
+            
+            
+            this.$root.off(listener, this[method])
+        })
+    }
 }
 
 
