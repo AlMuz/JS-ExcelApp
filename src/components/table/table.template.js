@@ -3,17 +3,23 @@ const CODES = {
     Z: 90
 }
 
+// creating editable cell
+function createCell(params = null) {
+    return `<div class="row-cell" contenteditable></div>`
+}   
 
-function createColumn(col) {
+// creating column header with letter
+function createColumn(letter) {
     return `
-        <div class="column">${col}</div>
+        <div class="column">${letter}</div>
     `
 }
 
-function createRow(content = '') {
+// creating row with index and content
+function createRow(content, index = '') {
     return `
         <div class="row">
-            <div class="row-info"></div>
+            <div class="row-info">${index}</div>
             <div class="row-data">${content}</div>
         </div>
     `
@@ -26,9 +32,11 @@ function toChar(_, index) {
 }
 
 export function createTable(rowsCount = 15) {
+    // storing latin alphabet difference here
     const colsCount = CODES.Z - CODES.A + 1
     const rows = []
 
+    // formating table header
     const cols = new Array(colsCount)
         .fill('')
         .map(toChar)
@@ -37,9 +45,14 @@ export function createTable(rowsCount = 15) {
     
     rows.push(createRow(cols))
 
-    for (let index = 0; index < rowsCount; index++) {
-        rows.push(createRow())
-        
+    // for rowsCount formatting data cells with index
+    for (let index = 1; index <= rowsCount; index++) {
+        const dataCells = new Array(colsCount)
+            .fill('')
+            .map(createCell)
+            .join('')
+            
+        rows.push(createRow(dataCells, index))
     }
     return rows.join('')
 }
