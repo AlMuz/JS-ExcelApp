@@ -11,15 +11,22 @@ function createCell(params = null) {
 // creating column header with letter
 function createColumn(letter) {
     return `
-        <div class="column">${letter}</div>
+        <div class="column">
+            ${letter}
+            <div class="col-resize"></div>
+        </div>
     `
 }
 
 // creating row with index and content
 function createRow(content, index = '') {
+    const resizer = index ? '<div class="row-resize"></div>' : ''
     return `
         <div class="row">
-            <div class="row-info">${index}</div>
+            <div class="row-info">
+                ${index}
+                ${resizer}
+            </div>
             <div class="row-data">${content}</div>
         </div>
     `
