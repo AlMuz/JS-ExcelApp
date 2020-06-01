@@ -11,7 +11,7 @@ function createCell(params = null) {
 // creating column header with letter
 function createColumn(letter) {
     return `
-        <div class="column">
+        <div class="column" data-type="resizable">
             ${letter}
             <div class="col-resize" data-resize="col"></div>
         </div>
