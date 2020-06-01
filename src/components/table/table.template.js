@@ -4,14 +4,14 @@ const CODES = {
 }
 
 // creating editable cell
-function createCell(params = null) {
-    return `<div class="row-cell" contenteditable></div>`
+function createCell(_, index) {
+    return `<div class="row-cell" contenteditable data-col="${index}"></div>`
 }   
 
 // creating column header with letter
-function createColumn(letter) {
+function createColumn(letter, index) {
     return `
-        <div class="column" data-type="resizable">
+        <div class="column" data-type="resizable" data-col="${index}">
             ${letter}
             <div class="col-resize" data-resize="col"></div>
         </div>
