@@ -4,22 +4,29 @@ const CODES = {
 }
 
 // creating editable cell
-function createCell(params = null) {
-    return `<div class="row-cell" contenteditable></div>`
+function createCell(_, index) {
+    return `<div class="row-cell" contenteditable data-col="${index}"></div>`
 }   
 
 // creating column header with letter
-function createColumn(letter) {
+function createColumn(letter, index) {
     return `
-        <div class="column">${letter}</div>
+        <div class="column" data-type="resizable" data-col="${index}">
+            ${letter}
+            <div class="col-resize" data-resize="col"></div>
+        </div>
     `
 }
 
 // creating row with index and content
 function createRow(content, index = '') {
+    const resizer = index ? '<div class="row-resize" data-resize="row"></div>' : ''
     return `
-        <div class="row">
-            <div class="row-info">${index}</div>
+        <div class="row" data-type="resizable">
+            <div class="row-info">
+                ${index}
+                ${resizer}
+            </div>
             <div class="row-data">${content}</div>
         </div>
     `
