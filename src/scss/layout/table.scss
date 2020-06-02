@@ -23,6 +23,7 @@
         border: 1px solid $border-color;
         background-color: #f8f9fa;
         border-top: 0;
+        user-select: none;
 
         & .row-resize {
             position: absolute;
@@ -32,8 +33,9 @@
             bottom: 0;
             height: 3px;
             background-color: $primary-color;
+            z-index: 2;
             &:hover {
-                opacity: 1;
+                opacity: 1 !important;
                 cursor: row-resize;
             }
 
@@ -56,6 +58,7 @@
         border-top: 0;
         border-left: 0;
         height: 100%;
+        user-select: none;
 
         & .col-resize {
             position: absolute;
@@ -65,8 +68,9 @@
             right: 0;
             width: 3px;
             background-color: $primary-color;
+            z-index: 2;
             &:hover {
-                opacity: 1;
+                opacity: 1 !important;
                 cursor: col-resize;
             }
         }
