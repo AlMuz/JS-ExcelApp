@@ -2,13 +2,14 @@ import { ExcelComponent } from '@core/ExcelComponent'
 import { createTable } from './table.template'
 import { onMousedown } from './table.events'
 import { TableSelection } from './TableSelection'
+import { $ } from '@core/DOM'
 
 export class Table extends ExcelComponent {
 	static className = 'excel__table'
 
 	constructor($root) {
 		super($root, {
-			listeners: ['mousedown']
+			listeners: ['mousedown', 'click']
 		})
 	}
 
@@ -31,5 +32,13 @@ export class Table extends ExcelComponent {
 
 	onMousedown(event) {
 		onMousedown(this.$root, event)
+	}
+
+	onClick(event) {
+		const id = event.target.dataset.id
+		if (id) {
+			const $cell = $(event.target)
+			this.selection.select($cell)
+		}
 	}
 }
