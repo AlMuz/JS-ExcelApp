@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { ExcelComponent } from '@core/ExcelComponent'
 import { createTable } from './table.template'
-import { onMousedown, onClick } from './table.events'
+import { onMousedown, onClick, onKeydown } from './table.events'
 import { TableSelection } from './TableSelection'
 
 export class Table extends ExcelComponent {
@@ -8,7 +9,7 @@ export class Table extends ExcelComponent {
 
 	constructor($root) {
 		super($root, {
-			listeners: ['mousedown', 'click']
+			listeners: ['mousedown', 'click', 'keydown']
 		})
 	}
 
@@ -34,6 +35,12 @@ export class Table extends ExcelComponent {
 	}
 
 	onClick(event) {
-		onClick(this.$root, this.selection, event);
+		onClick(this.$root, this.selection, event)
+	}
+
+	onKeydown(event) {
+		console.log(event);
+		
+		onKeydown(this.$root, this.selection, event)
 	}
 }

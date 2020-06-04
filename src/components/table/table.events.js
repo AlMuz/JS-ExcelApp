@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import { $ } from '@core/DOM'
 import { range } from '@/core/utils'
 
@@ -78,4 +79,53 @@ export function onClick($root, selection, event) {
             selection.select($cell)
         }
     }
+}
+
+export function onKeydown($root, selection, event) {
+    const keys = [
+        'Enter',
+        'Tab',
+        'ArrowLeft',
+        'ArrowRight',
+        'ArrowDown',
+        'ArrowUp'
+    ]
+    const { key } = event
+
+    console.log(event)
+
+    if (keys.includes(key) && !event.shiftKey) {
+        event.preventDefault()
+
+        const id = selection.current.id(true)
+        const $next = $root.find(nextSelector(key, id))
+        selection.select($next)
+    }
+}
+
+function nextSelector(key, { col, row }) {
+	// col starts from 0
+	const MIN_VALUE_COL = 0
+	// row starts from 1
+	const MIN_VALUE_ROW = 1
+	switch (key) {
+		case 'Enter':
+		case 'ArrowDown':
+			row++
+			break
+		case 'Tab':
+		case 'ArrowRight':
+			col++
+			break
+		case 'ArrowUp':
+			row = row - 1 < MIN_VALUE_ROW ? MIN_VALUE_ROW : row - 1
+			break
+		case 'ArrowLeft':
+			col = col - 1 < MIN_VALUE_COL ? MIN_VALUE_COL : col - 1
+			break
+		default:
+			break
+	}
+
+	return `[data-id="${row}:${col}"]`
 }
