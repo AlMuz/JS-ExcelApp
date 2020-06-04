@@ -1,8 +1,7 @@
 import { ExcelComponent } from '@core/ExcelComponent'
 import { createTable } from './table.template'
-import { onMousedown } from './table.events'
+import { onMousedown, onClick } from './table.events'
 import { TableSelection } from './TableSelection'
-import { $ } from '@core/DOM'
 
 export class Table extends ExcelComponent {
 	static className = 'excel__table'
@@ -35,10 +34,6 @@ export class Table extends ExcelComponent {
 	}
 
 	onClick(event) {
-		const id = event.target.dataset.id
-		if (id) {
-			const $cell = $(event.target)
-			this.selection.select($cell)
-		}
+		onClick(this.$root, this.selection, event);
 	}
 }

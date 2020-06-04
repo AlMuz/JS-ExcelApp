@@ -1,4 +1,5 @@
 import { $ } from '@core/DOM'
+import { range } from '@/core/utils'
 
 export function onMousedown($root, event) {
     if (event.target.dataset.resize) {
@@ -42,6 +43,39 @@ export function onMousedown($root, event) {
                 bottom: 0,
                 right: 0
             })
+        }
+    }
+}
+
+export function onClick($root, selection, event) {
+    // if data-id is setted
+    if (event.target.dataset.id) {
+        const $cell = $(event.target)
+
+        // if user selected cell with shift
+        if (event.shiftKey) {
+            // target cell
+            const target = $cell.id(true)
+
+            // currently selected cell
+            const current = selection.current.id(true)
+
+            // range of cols
+            const cols = range(current.col, target.col)
+
+            // range of rows
+            const rows = range(current.row, target.row)
+
+            const ids = cols.reduce((acc, col) => {
+                rows.forEach((row) => acc.push(`${row}:${col}`))
+                return acc
+            }, [])
+
+            // getting all elements from IDS
+            const $cells = ids.map((id) => $root.find(`[data-id="${id}"]`))
+            selection.selectGroup($cells)
+        } else {
+            selection.select($cell)
         }
     }
 }
