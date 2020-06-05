@@ -17,6 +17,10 @@ class DOM {
 		return this.$el.outerHTML.trim()
 	}
 
+	text(data) {
+		this.$el.textContent = data
+	}
+
 	clear() {
 		this.html()
 		return this
