@@ -2,6 +2,7 @@
 import { $ } from '@core/DOM'
 import { range } from '@/core/utils'
 
+// resizing of cols and rows
 export function onMousedown($root, event) {
     if (event.target.dataset.resize) {
         const $resizer = $(event.target)
@@ -27,7 +28,7 @@ export function onMousedown($root, event) {
                 $resizer.css({bottom: -delta + 'px'})
             }
         }
-        
+
         document.onmouseup = () => {
             document.onmouseup = null
             document.onmousemove = null
@@ -48,6 +49,7 @@ export function onMousedown($root, event) {
     }
 }
 
+// on cells selections
 export function onClick($root, selection, event) {
     // if data-id is setted
     if (event.target.dataset.id) {
@@ -81,6 +83,7 @@ export function onClick($root, selection, event) {
     }
 }
 
+// move selected cell according on pressed button
 export function onKeydown($root, selection, event) {
     const keys = [
         'Enter',
@@ -91,8 +94,6 @@ export function onKeydown($root, selection, event) {
         'ArrowUp'
     ]
     const { key } = event
-
-    console.log(event)
 
     if (keys.includes(key) && !event.shiftKey) {
         event.preventDefault()
