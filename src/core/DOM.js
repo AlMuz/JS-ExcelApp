@@ -18,7 +18,16 @@ class DOM {
 	}
 
 	text(data) {
-		this.$el.textContent = data
+		if (typeof data === 'string') {
+			this.$el.textContent = data
+			return this
+		}
+
+		if (this.$el.tagName.toLowerCase() === 'input') {
+			return this.$el.value.trim()
+		}
+
+		return this.$el.textContent.trim()
 	}
 
 	clear() {
@@ -38,7 +47,7 @@ class DOM {
 		if (node instanceof DOM) {
 			node = node.$el
 		}
-		
+
 		// some polyfill
 		if (Element.prototype.append) {
 			this.$el.append(node)
