@@ -1,3 +1,4 @@
+import { $ } from '@core/DOM'
 import { ExcelComponent } from '@core/ExcelComponent'
 
 export class Formula extends ExcelComponent {
@@ -11,6 +12,20 @@ export class Formula extends ExcelComponent {
 		})
 	}
 
+	init() {
+		super.init()
+
+		this.$formula = this.$root.find('.input')
+
+		this.$on('table:select', ($cell) => {
+			this.$formula.text($cell.text())
+		})
+
+		this.$on('table:input', ($cell) => {
+			this.$formula.text($cell.text())
+		})
+	}
+
 	toHTML() {
 		return `
 			<div class="info">fx</div>
@@ -20,13 +35,13 @@ export class Formula extends ExcelComponent {
 
 	// on input - change in cell text
 	onInput(event) {
-		const text = event.target.textContent.trim()
-		this.$emit('formula:input', text)
+		this.$emit('formula:input', $(event.target).text())
 	}
 
 	// on enter - focus on cell
 	onKeydown(event) {
-		if (event.key === 'Enter') {
+		const keys = ['Enter', 'Tab']
+		if (keys.includes(event.key)) {
 			event.preventDefault()
 			this.$emit('formula:enter')
 		}

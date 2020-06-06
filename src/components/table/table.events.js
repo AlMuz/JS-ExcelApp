@@ -3,7 +3,7 @@ import { $ } from '@core/DOM'
 import { range } from '@/core/utils'
 
 // resizing of cols and rows
-export function onMousedown($root, event) {
+export function onMousedown(event, $root) {
     if (event.target.dataset.resize) {
         const $resizer = $(event.target)
         const $parent = $resizer.closest('[data-type="resizable"]')
@@ -50,7 +50,7 @@ export function onMousedown($root, event) {
 }
 
 // on cells selections
-export function onClick($root, selection, event) {
+export function onClick(event, $root, selection) {
     // if data-id is setted
     if (event.target.dataset.id) {
         const $cell = $(event.target)
@@ -84,7 +84,7 @@ export function onClick($root, selection, event) {
 }
 
 // move selected cell according on pressed button
-export function onKeydown($root, selection, event) {
+export function onKeydown(event, $root, selection) {
     const keys = [
         'Enter',
         'Tab',
@@ -100,7 +100,8 @@ export function onKeydown($root, selection, event) {
 
         const id = selection.current.id(true)
         const $next = $root.find(nextSelector(key, id))
-        selection.select($next)
+		selection.select($next)
+		return $next
     }
 }
 
