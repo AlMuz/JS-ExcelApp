@@ -4,8 +4,15 @@ const CODES = {
 }
 
 // creating editable cell
-function createCell(_, index) {
-    return `<div class="row-cell" contenteditable data-col="${index}"></div>`
+function createCell(row) {
+    return function(_, index) {
+        return `<div 
+                class="row-cell" 
+                contenteditable 
+                data-col="${index}" 
+                data-id="${row}:${index}"
+            ></div>`
+    }
 }   
 
 // creating column header with letter
@@ -56,7 +63,8 @@ export function createTable(rowsCount = 15) {
     for (let index = 1; index <= rowsCount; index++) {
         const dataCells = new Array(colsCount)
             .fill('')
-            .map(createCell)
+            // .map((_, col) => createCell(index, col))
+            .map(createCell(index))
             .join('')
             
         rows.push(createRow(dataCells, index))
