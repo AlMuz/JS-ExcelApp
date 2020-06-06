@@ -10,7 +10,7 @@ export class Formula extends ExcelComponent {
 			...options
 		})
 	}
-	
+
 	toHTML() {
 		return `
 			<div class="info">fx</div>
@@ -20,6 +20,6 @@ export class Formula extends ExcelComponent {
 
 	onInput(event) {
 		const text = event.target.textContent.trim()
-		this.emitter.emit('formulaInput', text)
+		this.$emit('formula:input', text)
 	}
 }

@@ -27,7 +27,7 @@ export class Table extends ExcelComponent {
 		const $cell = this.$root.find('[data-id="1:0"]')
 		this.selection.select($cell)
 
-		this.emitter.subscribe('formulaInput', (text) => {
+		this.$on('formula:input', (text) => {
 			this.selection.current.text(text)
 		})
 	}
@@ -45,8 +45,8 @@ export class Table extends ExcelComponent {
 	}
 
 	onKeydown(event) {
-		console.log(event);
-		
+		console.log(event)
+
 		onKeydown(this.$root, this.selection, event)
 	}
 }
