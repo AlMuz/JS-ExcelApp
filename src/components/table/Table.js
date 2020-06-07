@@ -49,8 +49,18 @@ export class Table extends ExcelComponent {
 		return createTable()
 	}
 
+	async resizeTable(event) {
+		try {
+			const data = await onMousedown(event, this.$root)
+			this.$dispatch({type: 'TABLE_RESIZE', data})
+			console.log(data);
+		} catch (error) {
+			console.warn('resizeError' ,error.message);
+		}
+	}
+
 	onMousedown(event) {
-		onMousedown(event, this.$root)
+		this.resizeTable(event)
 	}
 
 	onClick(event) {
