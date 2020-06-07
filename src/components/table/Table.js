@@ -4,6 +4,7 @@ import { createTable } from './table.template'
 import { onMousedown, onClick, onKeydown } from './table.events'
 import { TableSelection } from './TableSelection'
 import { $ } from '@core/DOM'
+import * as actions from '@/redux/actions'
 
 export class Table extends ExcelComponent {
 	static className = 'excel__table'
@@ -52,7 +53,7 @@ export class Table extends ExcelComponent {
 	async resizeTable(event) {
 		try {
 			const data = await onMousedown(event, this.$root)
-			this.$dispatch({type: 'TABLE_RESIZE', data})
+			this.$dispatch(actions.tableResize(data))
 			console.log(data);
 		} catch (error) {
 			console.warn('resizeError' ,error.message);
