@@ -45,7 +45,8 @@ export function onMousedown(event, $root) {
 
 				resolve({
 					value,
-					id: type === 'col' ? $parent.data.col : null
+					id: $parent.data[type],
+					type
 				})
 
 				$resizer.css({

@@ -54,9 +54,8 @@ export class Table extends ExcelComponent {
 		try {
 			const data = await onMousedown(event, this.$root)
 			this.$dispatch(actions.tableResize(data))
-			console.log(data);
 		} catch (error) {
-			console.warn('resizeError' ,error.message);
+			console.warn('resizeError', error.message);
 		}
 	}
 

@@ -4,6 +4,17 @@ const CODES = {
 }
 
 const DEFAULT_WIDTH = 120
+const DEFAULT_HEIGHT = 24
+
+
+function getWidth(colState, index) {
+	return (colState[index] || DEFAULT_WIDTH) + 'px'
+}
+
+
+function getHeight(rowState, index) {
+	return (rowState[index] || DEFAULT_HEIGHT) + 'px'
+}
 
 // creating editable cell
 function createCell(state, row) {
@@ -35,12 +46,13 @@ function createColumn({ letter, index, width }) {
 }
 
 // creating row with index and content
-function createRow(content, index = '') {
+function createRow(content, state, index = '') {
+	const height = getHeight(state.rowState, index)
 	const resizer = index
 		? '<div class="row-resize" data-resize="row"></div>'
 		: ''
 	return `
-        <div class="row" data-type="resizable">
+        <div class="row" data-type="resizable" data-row="${index}" style="height:${height}">
             <div class="row-info">
                 ${index}
                 ${resizer}
@@ -54,10 +66,6 @@ function createRow(content, index = '') {
 // in params skipping all except index
 function toChar(_, index) {
 	return String.fromCharCode(CODES.A + index)
-}
-
-function getWidth(colState, index) {
-	return (colState[index] || DEFAULT_WIDTH) + 'px'
 }
 
 function widthFrom(state) {
@@ -83,7 +91,7 @@ export function createTable(rowsCount = 15, state) {
 		.map(createColumn)
 		.join('')
 
-	rows.push(createRow(cols))
+	rows.push(createRow(cols, state))
 
 	// for rowsCount formatting data cells with index
 	for (let index = 1; index <= rowsCount; index++) {
@@ -92,7 +100,7 @@ export function createTable(rowsCount = 15, state) {
 			.map(createCell(state, index))
 			.join('')
 
-		rows.push(createRow(dataCells, index))
+		rows.push(createRow(dataCells, state, index))
 	}
 	return rows.join('')
 }
