@@ -26,7 +26,7 @@ export class Table extends ExcelComponent {
 	init() {
 		super.init()
 
-		this.selectCell(this.$root.find('[data-id="1:0"]'));
+		this.selectCell(this.$root.find('[data-id="1:0"]'))
 
 		this.$on('formula:input', (text) => {
 			this.selection.current.text(text)
@@ -51,27 +51,30 @@ export class Table extends ExcelComponent {
 		return createTable(15, this.store.getState())
 	}
 
-	async resizeTable(event) {
+	async onMousedown(event) {
 		try {
 			const data = await onMousedown(event, this.$root)
 			this.$dispatch(actions.tableResize(data))
 		} catch (error) {
-			console.warn('resizeError', error.message);
+			console.warn('resizeError', error.message)
 		}
 	}
 
-	onMousedown(event) {
-		this.resizeTable(event)
+	async onClick(event) {
+		try {
+			const $cell = await onClick(event, this.$root, this.selection)
+			this.$emit('table:select', $cell)
+		} catch (error) {
+			console.warn('onClick', error.message)
+		}
 	}
 
-	onClick(event) {
-		onClick(event, this.$root, this.selection)
-	}
-
-	onKeydown(event) {
-		const $next = onKeydown(event, this.$root, this.selection, this.$emit)
-		if ($next) {
+	async onKeydown(event) {
+		try {
+			const $next = await onKeydown(event, this.$root, this.selection, this.$emit)
 			this.$emit('table:select', $next)
+		} catch (error) {
+			console.warn('onKeydown', error.message)
 		}
 	}
 
@@ -80,9 +83,11 @@ export class Table extends ExcelComponent {
 	}
 
 	updateStoreText(value) {
-		this.$dispatch(actions.changeText({
-			id: this.selection.current.id(),
-			value
-		}))
+		this.$dispatch(
+			actions.changeText({
+				id: this.selection.current.id(),
+				value
+			})
+		)
 	}
 }
