@@ -16,18 +16,23 @@ function getHeight(rowState, index) {
 	return (rowState[index] || DEFAULT_HEIGHT) + 'px'
 }
 
+function getData(dataState, index) {
+	return dataState[index] || ''
+}
+
 // creating editable cell
 function createCell(state, row) {
 	return function (_, index) {
 		const width = getWidth(state.colState, index)
-
+		const data = getData(state.dataState, `${row}:${index}`)
+		
 		return `<div
                 class="row-cell"
                 contenteditable
                 data-col="${index}"
                 data-id="${row}:${index}"
                 style="width:${width}"
-            ></div>`
+            >${data}</div>`
 	}
 }
 
