@@ -2,7 +2,10 @@ import { storage } from '@core/utils'
 
 const defaultState = {
 	rowState: {},
-	colState: {}
+	colState: {},
+	dataState: {},
+	
+	currentText: ''
 }
 
 // if there is empty localStorage - will be selected defaultState
