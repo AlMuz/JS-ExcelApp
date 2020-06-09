@@ -44,7 +44,7 @@ export class Table extends ExcelComponent {
 
 	selectCell($cell) {
 		this.selection.select($cell)
-		this.$emit('table:input', $cell)
+		this.$emit('table:select', $cell)
 	}
 
 	toHTML() {
