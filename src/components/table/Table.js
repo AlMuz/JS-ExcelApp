@@ -36,10 +36,6 @@ export class Table extends ExcelComponent {
 		this.$on('formula:enter', () => {
 			this.selection.current.focus()
 		})
-
-		// this.$subscribe(state => {
-		// 	console.log('TableState', state);
-		// })
 	}
 
 	selectCell($cell) {
