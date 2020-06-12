@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+import { defatultStyles } from '../../constants'
 import { ExcelComponent } from '@core/ExcelComponent'
 import { createTable } from './table.template'
 import { onMousedown, onClick, onKeydown } from './table.events'
@@ -36,11 +36,16 @@ export class Table extends ExcelComponent {
 		this.$on('formula:enter', () => {
 			this.selection.current.focus()
 		})
+
+		this.$on('toolbar:applyStyle', (style) => {
+			this.selection.applyStyle(style)
+		})
 	}
 
 	selectCell($cell) {
 		this.selection.select($cell)
 		this.$emit('table:select', $cell)
+		console.log($cell.getStyles(Object.keys(defatultStyles)));
 	}
 
 	toHTML() {
@@ -60,6 +65,7 @@ export class Table extends ExcelComponent {
 		try {
 			const $cell = await onClick(event, this.$root, this.selection)
 			this.$emit('table:select', $cell)
+			console.log($cell.getStyles(Object.keys(defatultStyles)));
 		} catch (error) {
 			console.warn('onClick', error.message)
 		}

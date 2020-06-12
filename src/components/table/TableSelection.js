@@ -21,6 +21,12 @@ export class TableSelection {
         this.group.forEach(($el) => $el.addClass(TableSelection.className))
     }
 
+    applyStyle(style) {
+        this.group.forEach(($element) => {
+            $element.css(style)
+        })
+    }
+
     clear() {
         // removing classes from all cells
         this.group.forEach(($el) => $el.removeClass(TableSelection.className))

@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 import { $ } from '@core/DOM'
 import { range } from '@/core/utils'
 
