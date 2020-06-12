@@ -45,7 +45,8 @@ export class Table extends ExcelComponent {
 	selectCell($cell) {
 		this.selection.select($cell)
 		this.$emit('table:select', $cell)
-		console.log($cell.getStyles(Object.keys(defaultStyles)));
+		const styles = $cell.getStyles(Object.keys(defaultStyles))
+		this.$dispatch(actions.changeStyles(styles))
 	}
 
 	toHTML() {
@@ -65,7 +66,10 @@ export class Table extends ExcelComponent {
 		try {
 			const $cell = await onClick(event, this.$root, this.selection)
 			this.$emit('table:select', $cell)
-			console.log($cell.getStyles(Object.keys(defaultStyles)));
+			const styles = $cell.getStyles(Object.keys(defaultStyles))
+			console.log(styles);
+			
+			this.$dispatch(actions.changeStyles(styles))
 		} catch (error) {
 			console.warn('onClick', error.message)
 		}
