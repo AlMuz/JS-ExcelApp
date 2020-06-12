@@ -1,23 +1,21 @@
 import { TABLE_RESIZE, CHANGE_TEXT } from "./types"
 
 export function rootReducer(state, action) {
-	let prevState
 	let field
 	switch (action.type) {
 		case TABLE_RESIZE:
-			// if its col - name colState
-			// else rowState
 			field = action.data.type === 'col' ? 'colState' : 'rowState'
-
-			// if there is empty prevState for this field - empty object
-			prevState = state[field] || {}
-			prevState[action.data.id] = action.data.value
-			return {...state, [field]: prevState} // id, value
+			return {...state, [field]: value(state, field, action)} 
 		case CHANGE_TEXT:
-			prevState = state['dataState'] || {}
-			prevState[action.data.id] = action.data.value
-			return {...state, currentText: action.data.value, dataState: prevState}
+			field = 'dataState'
+			return {...state, currentText: action.data.value, [field]: value(state, field, action)}
 		default:
 			return state
 	}
+}
+
+function value(state, field, action) {
+	const val = state[field] || {}
+	val[action.data.id] = action.data.value
+	return val
 }
