@@ -18,7 +18,7 @@ class DOM {
 	}
 
 	text(data) {
-		if (typeof data === 'string') {
+		if (typeof data !== 'undefined') {
 			this.$el.textContent = data
 			return this
 		}
