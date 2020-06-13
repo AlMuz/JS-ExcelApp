@@ -1,108 +1,122 @@
-/* eslint-disable no-unreachable */
 import { $ } from '@core/DOM'
 import { range } from '@/core/utils'
 
 // resizing of cols and rows
 export function onMousedown(event, $root) {
-    if (event.target.dataset.resize) {
-        const $resizer = $(event.target)
-        const $parent = $resizer.closest('[data-type="resizable"]')
-        const coords = $parent.getCoords()
-        const type = $resizer.data.resize
-        const sideProp = type === 'col' ? 'bottom' : 'right'
-        let value
+	return new Promise((resolve) => {
+		if (event.target.dataset.resize) {
+			const $resizer = $(event.target)
+			const $parent = $resizer.closest('[data-type="resizable"]')
+			const coords = $parent.getCoords()
+			const type = $resizer.data.resize
+			const sideProp = type === 'col' ? 'bottom' : 'right'
+			let value
 
-        $resizer.css({
-            opacity: 1,
-            [sideProp]: '-2000px'
-        })
+			$resizer.css({
+				opacity: 1,
+				[sideProp]: '-2000px'
+			})
 
-        document.onmousemove= (e) => {
-            if (type === 'col') {
-                const delta = e.pageX - coords.right
-                value = coords.width + delta
-                $resizer.css({right: -delta + 'px'})
-            } else {
-                const delta = e.pageY - coords.bottom
-                value = coords.height + delta
-                $resizer.css({bottom: -delta + 'px'})
-            }
-        }
+			document.onmousemove = (e) => {
+				if (type === 'col') {
+					const delta = e.pageX - coords.right
+					value = coords.width + delta
+					$resizer.css({ right: -delta + 'px' })
+				} else {
+					const delta = e.pageY - coords.bottom
+					value = coords.height + delta
+					$resizer.css({ bottom: -delta + 'px' })
+				}
+			}
 
-        document.onmouseup = () => {
-            document.onmouseup = null
-            document.onmousemove = null
+			document.onmouseup = () => {
+				document.onmouseup = null
+				document.onmousemove = null
 
-            if (type === 'col') {
-                $parent.css({width: value + 'px'})
-                $root.findAll(`[data-col="${$parent.data.col}"]`)
-                    .forEach(el => el.style.width = value + 'px')
-            } else {
-                $parent.css({height: value + 'px'})
-            }
-            $resizer.css({
-                opacity: 0,
-                bottom: 0,
-                right: 0
-            })
-        }
-    }
+				if (type === 'col') {
+					$parent.css({ width: value + 'px' })
+					$root
+						.findAll(`[data-col="${$parent.data.col}"]`)
+						.forEach((el) => (el.style.width = value + 'px'))
+				} else {
+					$parent.css({ height: value + 'px' })
+				}
+
+				resolve({
+					value,
+					id: $parent.data[type],
+					type
+				})
+
+				$resizer.css({
+					opacity: 0,
+					bottom: 0,
+					right: 0
+				})
+			}
+		}
+	})
 }
 
 // on cells selections
 export function onClick(event, $root, selection) {
-    // if data-id is setted
-    if (event.target.dataset.id) {
-        const $cell = $(event.target)
+	return new Promise((resolve) => {
+		// if data-id is setted
+		if (event.target.dataset.id) {
+			const $cell = $(event.target)
 
-        // if user selected cell with shift
-        if (event.shiftKey) {
-            // target cell
-            const target = $cell.id(true)
+			// if user selected cell with shift
+			if (event.shiftKey) {
+				// target cell
+				const target = $cell.id(true)
 
-            // currently selected cell
-            const current = selection.current.id(true)
+				// currently selected cell
+				const current = selection.current.id(true)
 
-            // range of cols
-            const cols = range(current.col, target.col)
+				// range of cols
+				const cols = range(current.col, target.col)
 
-            // range of rows
-            const rows = range(current.row, target.row)
+				// range of rows
+				const rows = range(current.row, target.row)
 
-            const ids = cols.reduce((acc, col) => {
-                rows.forEach((row) => acc.push(`${row}:${col}`))
-                return acc
-            }, [])
+				const ids = cols.reduce((acc, col) => {
+					rows.forEach((row) => acc.push(`${row}:${col}`))
+					return acc
+				}, [])
 
-            // getting all elements from IDS
-            const $cells = ids.map((id) => $root.find(`[data-id="${id}"]`))
-            selection.selectGroup($cells)
-        } else {
-            selection.select($cell)
-        }
-    }
+				// getting all elements from IDS
+				const $cells = ids.map((id) => $root.find(`[data-id="${id}"]`))
+				selection.selectGroup($cells)
+			} else {
+				selection.select($cell)
+				resolve($cell)
+			}
+		}
+	})
 }
 
 // move selected cell according on pressed button
 export function onKeydown(event, $root, selection) {
-    const keys = [
-        'Enter',
-        'Tab',
-        'ArrowLeft',
-        'ArrowRight',
-        'ArrowDown',
-        'ArrowUp'
-    ]
-    const { key } = event
+	return new Promise((resolve) => {
+		const keys = [
+			'Enter',
+			'Tab',
+			'ArrowLeft',
+			'ArrowRight',
+			'ArrowDown',
+			'ArrowUp'
+		]
+		const { key } = event
 
-    if (keys.includes(key) && !event.shiftKey) {
-        event.preventDefault()
+		if (keys.includes(key) && !event.shiftKey) {
+			event.preventDefault()
 
-        const id = selection.current.id(true)
-        const $next = $root.find(nextSelector(key, id))
-		selection.select($next)
-		return $next
-    }
+			const id = selection.current.id(true)
+			const $next = $root.find(nextSelector(key, id))
+			selection.select($next)
+			resolve($next)
+		}
+	})
 }
 
 function nextSelector(key, { col, row }) {

@@ -1,9 +1,8 @@
 class DOM {
 	constructor(selector) {
 		// check for string / node
-		this.$el = typeof selector === 'string'
-			? document.querySelector(selector)
-			: selector
+		this.$el =
+			typeof selector === 'string' ? document.querySelector(selector) : selector
 	}
 
 	// if param - string - create node
@@ -18,7 +17,7 @@ class DOM {
 	}
 
 	text(data) {
-		if (typeof data === 'string') {
+		if (typeof data !== 'undefined') {
 			this.$el.textContent = data
 			return this
 		}
@@ -84,6 +83,13 @@ class DOM {
 		})
 	}
 
+	getStyles(styles = []) {
+		return styles.reduce((res, style) => {
+			res[style] = this.$el.style[style]
+			return res
+		}, {})
+	}
+
 	id(parse) {
 		if (parse) {
 			const parsed = this.id().split(':')
@@ -98,6 +104,14 @@ class DOM {
 	focus() {
 		this.$el.focus()
 		return this
+	}
+
+	attr(name, value) {
+		if (value) {
+			this.$el.setAttribute(name, value)
+			return this
+		}
+		return this.$el.getAttribute(name)
 	}
 
 	addClass(className) {

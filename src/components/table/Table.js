@@ -1,9 +1,11 @@
-/* eslint-disable no-unused-vars */
+import { defaultStyles } from '../../constants'
 import { ExcelComponent } from '@core/ExcelComponent'
 import { createTable } from './table.template'
 import { onMousedown, onClick, onKeydown } from './table.events'
 import { TableSelection } from './TableSelection'
 import { $ } from '@core/DOM'
+import { parse } from '@core/parse'
+import * as actions from '@/redux/actions'
 
 export class Table extends ExcelComponent {
 	static className = 'excel__table'
@@ -25,42 +27,84 @@ export class Table extends ExcelComponent {
 	init() {
 		super.init()
 
-		this.selectCell(this.$root.find('[data-id="1:0"]'));
+		this.selectCell(this.$root.find('[data-id="1:0"]'))
 
 		this.$on('formula:input', (text) => {
-			this.selection.current.text(text)
+			this.selection.current.attr('data-value', text).text(parse(text))
+			this.updateStoreText(text)
 		})
 
 		this.$on('formula:enter', () => {
 			this.selection.current.focus()
 		})
+
+		this.$on('toolbar:applyStyle', (value) => {
+			this.selection.applyStyle(value)
+			this.$dispatch(
+				actions.applyStyle({
+					value,
+					ids: this.selection.selectedIds
+				})
+			)
+		})
 	}
 
 	selectCell($cell) {
 		this.selection.select($cell)
-		this.$emit('table:input', $cell)
+		this.$emit('table:select', $cell)
+		const styles = $cell.getStyles(Object.keys(defaultStyles))
+		this.$dispatch(actions.changeStyles(styles))
 	}
 
 	toHTML() {
-		return createTable()
+		return createTable(15, this.store.getState())
 	}
 
-	onMousedown(event) {
-		onMousedown(event, this.$root)
+	async onMousedown(event) {
+		try {
+			const data = await onMousedown(event, this.$root)
+			this.$dispatch(actions.tableResize(data))
+		} catch (error) {
+			console.warn('resizeError', error.message)
+		}
 	}
 
-	onClick(event) {
-		onClick(event, this.$root, this.selection)
+	async onClick(event) {
+		try {
+			const $cell = await onClick(event, this.$root, this.selection)
+			this.$emit('table:select', $cell)
+			const styles = $cell.getStyles(Object.keys(defaultStyles))
+
+			this.$dispatch(actions.changeStyles(styles))
+		} catch (error) {
+			console.warn('onClick', error.message)
+		}
 	}
 
-	onKeydown(event) {
-		const $next = onKeydown(event, this.$root, this.selection, this.$emit)
-		if ($next) {
+	async onKeydown(event) {
+		try {
+			const $next = await onKeydown(
+				event,
+				this.$root,
+				this.selection,
+				this.$emit
+			)
 			this.$emit('table:select', $next)
+		} catch (error) {
+			console.warn('onKeydown', error.message)
 		}
 	}
 
 	onInput(event) {
-		this.$emit('table:input', $(event.target))
+		this.updateStoreText($(event.target).text())
+	}
+
+	updateStoreText(value) {
+		this.$dispatch(
+			actions.changeText({
+				id: this.selection.current.id(),
+				value
+			})
+		)
 	}
 }

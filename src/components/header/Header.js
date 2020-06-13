@@ -1,4 +1,7 @@
+import { $ } from '@core/DOM'
 import { ExcelComponent } from '@core/ExcelComponent'
+import { createHeader } from './header.template'
+import { changeTableTitle } from '@/redux/actions'
 
 export class Header extends ExcelComponent {
 	static className = 'excel__header'
@@ -6,21 +9,21 @@ export class Header extends ExcelComponent {
 	constructor($root, options) {
 		super($root, {
 			name: 'Header',
+			listeners: ['input'],
 			...options
 		})
 	}
 
 	toHTML() {
-		return `
-			<input type="text" class="input" value="New table" />
-			<div class="buttons">
-				<div class="button">
-					<i class="material-icons"> delete </i>
-				</div>
-				<div class="button">
-					<i class="material-icons"> exit_to_app </i>
-				</div>
-			</div>
-		`
+		return createHeader(this.store.getState())
+	}
+
+	onInput(event) {
+		const value = $(event.target).text()
+		this.$dispatch(
+			changeTableTitle({
+				value
+			})
+		)
 	}
 }
