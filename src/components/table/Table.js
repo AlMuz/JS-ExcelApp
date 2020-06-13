@@ -41,8 +41,6 @@ export class Table extends ExcelComponent {
 		})
 
 		this.$on('toolbar:applyStyle', (value) => {
-			console.log(value);
-			
 			this.selection.applyStyle(value)
 			this.$dispatch(actions.applyStyle({
 				value,
@@ -76,7 +74,6 @@ export class Table extends ExcelComponent {
 			const $cell = await onClick(event, this.$root, this.selection)
 			this.$emit('table:select', $cell)
 			const styles = $cell.getStyles(Object.keys(defaultStyles))
-			console.log(styles);
 			
 			this.$dispatch(actions.changeStyles(styles))
 		} catch (error) {

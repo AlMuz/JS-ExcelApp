@@ -12,7 +12,6 @@ import { initialState } from '@/redux/initialState'
 const storeClass = new Store(rootReducer, initialState)
 
 const stateListener = debounce((state) => {
-	console.log('app state', state)
 	storage('excel-state', state)
 }, 300)
 
