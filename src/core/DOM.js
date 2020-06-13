@@ -107,6 +107,14 @@ class DOM {
 		return this
 	}
 
+	attr(name, value) {
+		if (value) {
+			this.$el.setAttribute(name, value)
+			return this
+		}
+		return this.$el.getAttribute(name)
+	}
+
 	addClass(className) {
 		this.$el.classList.add(className)
 	}

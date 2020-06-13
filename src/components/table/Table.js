@@ -4,6 +4,7 @@ import { createTable } from './table.template'
 import { onMousedown, onClick, onKeydown } from './table.events'
 import { TableSelection } from './TableSelection'
 import { $ } from '@core/DOM'
+import { parse } from '@core/parse'
 import * as actions from '@/redux/actions'
 
 export class Table extends ExcelComponent {
@@ -29,7 +30,9 @@ export class Table extends ExcelComponent {
 		this.selectCell(this.$root.find('[data-id="1:0"]'))
 
 		this.$on('formula:input', (text) => {
-			this.selection.current.text(text)
+			this.selection.current
+				.attr('data-value', text)
+				.text(parse(text))
 			this.updateStoreText(text)
 		})
 

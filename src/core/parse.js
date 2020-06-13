@@ -1,0 +1,13 @@
+export function parse(value = '') {
+    console.log(value);
+    
+    if (value.startsWith('=')) {
+        try {
+            return eval(value.slice(1))
+        } catch (error) {
+            console.warn('Skipping parse message');
+        }
+    }
+    
+    return value
+}
