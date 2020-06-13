@@ -18,7 +18,7 @@ export class Header extends ExcelComponent {
 		return createHeader(this.store.getState())
 	}
 
-	onInput(event) { 
+	onInput(event) {
 		const value = $(event.target).text()
 		this.$dispatch(
 			changeTableTitle({

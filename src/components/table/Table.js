@@ -30,9 +30,7 @@ export class Table extends ExcelComponent {
 		this.selectCell(this.$root.find('[data-id="1:0"]'))
 
 		this.$on('formula:input', (text) => {
-			this.selection.current
-				.attr('data-value', text)
-				.text(parse(text))
+			this.selection.current.attr('data-value', text).text(parse(text))
 			this.updateStoreText(text)
 		})
 
@@ -42,10 +40,12 @@ export class Table extends ExcelComponent {
 
 		this.$on('toolbar:applyStyle', (value) => {
 			this.selection.applyStyle(value)
-			this.$dispatch(actions.applyStyle({
-				value,
-				ids: this.selection.selectedIds
-			}))
+			this.$dispatch(
+				actions.applyStyle({
+					value,
+					ids: this.selection.selectedIds
+				})
+			)
 		})
 	}
 
@@ -74,7 +74,7 @@ export class Table extends ExcelComponent {
 			const $cell = await onClick(event, this.$root, this.selection)
 			this.$emit('table:select', $cell)
 			const styles = $cell.getStyles(Object.keys(defaultStyles))
-			
+
 			this.$dispatch(actions.changeStyles(styles))
 		} catch (error) {
 			console.warn('onClick', error.message)
@@ -83,7 +83,12 @@ export class Table extends ExcelComponent {
 
 	async onKeydown(event) {
 		try {
-			const $next = await onKeydown(event, this.$root, this.selection, this.$emit)
+			const $next = await onKeydown(
+				event,
+				this.$root,
+				this.selection,
+				this.$emit
+			)
 			this.$emit('table:select', $next)
 		} catch (error) {
 			console.warn('onKeydown', error.message)

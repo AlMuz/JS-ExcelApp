@@ -1,9 +1,8 @@
 class DOM {
 	constructor(selector) {
 		// check for string / node
-		this.$el = typeof selector === 'string'
-			? document.querySelector(selector)
-			: selector
+		this.$el =
+			typeof selector === 'string' ? document.querySelector(selector) : selector
 	}
 
 	// if param - string - create node

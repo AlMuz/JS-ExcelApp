@@ -1,4 +1,4 @@
-import {capitalize} from '@core/utils'
+import { capitalize } from '@core/utils'
 
 export class DOMListener {
 	constructor($root, listeners = []) {
@@ -11,38 +11,36 @@ export class DOMListener {
 	}
 
 	initDOMListeners() {
-        // going through all listeners
+		// going through all listeners
 		this.listeners.forEach((listener) => {
+			// getting methods name in format 'onMethod'
+			const method = getMethodName(capitalize(listener))
 
-            // getting methods name in format 'onMethod'
-            const method = getMethodName(capitalize(listener))
-            
-            // if method not exists in component - error
-            if (!this[method]) {
-                throw new Error(`Method ${method} is not implemented in ${this.name} component`)
-            }
+			// if method not exists in component - error
+			if (!this[method]) {
+				throw new Error(
+					`Method ${method} is not implemented in ${this.name} component`
+				)
+			}
 
-            // else assign listener and transfer to it this context
-            this[method] = this[method].bind(this)
-            this.$root.on(listener, this[method])
-        })
+			// else assign listener and transfer to it this context
+			this[method] = this[method].bind(this)
+			this.$root.on(listener, this[method])
+		})
 	}
 
 	removeDOMListeners() {
-        // going through all listeners
+		// going through all listeners
 		this.listeners.forEach((listener) => {
+			// getting methods name in format 'onMethod'
+			const method = getMethodName(capitalize(listener))
 
-            // getting methods name in format 'onMethod'
-            const method = getMethodName(capitalize(listener))
-            
-            
-            this.$root.off(listener, this[method])
-        })
-    }
+			this.$root.off(listener, this[method])
+		})
+	}
 }
-
 
 // something like private function
 function getMethodName(eventName) {
-    return `on${eventName}`
+	return `on${eventName}`
 }

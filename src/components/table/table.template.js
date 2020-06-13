@@ -1,6 +1,6 @@
-import { defaultStyles } from "../../constants"
-import { toInlineStyles } from "@core/utils"
-import { parse } from "@core/parse"
+import { defaultStyles } from '../../constants'
+import { toInlineStyles } from '@core/utils'
+import { parse } from '@core/parse'
 
 const CODES = {
 	A: 65,
@@ -10,11 +10,9 @@ const CODES = {
 const DEFAULT_WIDTH = 120
 const DEFAULT_HEIGHT = 24
 
-
 function getWidth(colState, index) {
 	return (colState[index] || DEFAULT_WIDTH) + 'px'
 }
-
 
 function getHeight(rowState, index) {
 	return (rowState[index] || DEFAULT_HEIGHT) + 'px'
@@ -30,8 +28,11 @@ function createCell(state, row) {
 		const id = `${row}:${index}`
 		const width = getWidth(state.colState, index)
 		const data = getData(state.dataState, id)
-		const styles = toInlineStyles({...defaultStyles, ...state.stylesState[id]})
-		
+		const styles = toInlineStyles({
+			...defaultStyles,
+			...state.stylesState[id]
+		})
+
 		return `<div
                 class="row-cell"
                 contenteditable

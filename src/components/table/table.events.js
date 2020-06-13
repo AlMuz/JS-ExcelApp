@@ -107,10 +107,10 @@ export function onKeydown(event, $root, selection) {
 			'ArrowUp'
 		]
 		const { key } = event
-	
+
 		if (keys.includes(key) && !event.shiftKey) {
 			event.preventDefault()
-	
+
 			const id = selection.current.id(true)
 			const $next = $root.find(nextSelector(key, id))
 			selection.select($next)

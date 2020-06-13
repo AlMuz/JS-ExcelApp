@@ -17,7 +17,7 @@ export function createToolbar(state) {
 		{
 			icon: 'format_align_left',
 			active: state['textAlign'] === 'left',
-			value: { textAlign: state['textAlign'] !== 'left' ? 'left' : 'left'}
+			value: { textAlign: state['textAlign'] !== 'left' ? 'left' : 'left' }
 		},
 		{
 			icon: 'format_align_center',
@@ -37,12 +37,17 @@ export function createToolbar(state) {
 		{
 			icon: 'format_italic',
 			active: state['fontStyle'] === 'italic',
-			value: { fontStyle: state['fontStyle'] === 'italic' ? 'normal' : 'italic' }
+			value: {
+				fontStyle: state['fontStyle'] === 'italic' ? 'normal' : 'italic'
+			}
 		},
 		{
 			icon: 'format_underline',
 			active: state['textDecoration'] === 'underline',
-			value: { textDecoration: state['textDecoration'] === 'underline' ? 'none' : 'underline' }
+			value: {
+				textDecoration:
+					state['textDecoration'] === 'underline' ? 'none' : 'underline'
+			}
 		}
 	]
 	return buttons.map(createButton).join('')

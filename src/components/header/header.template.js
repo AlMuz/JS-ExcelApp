@@ -1,8 +1,8 @@
-import { defaultTableTitle } from "../../constants"
+import { defaultTableTitle } from '../../constants'
 
 export function createHeader(state) {
-    const title = state.tableTitle || defaultTableTitle
-    return `
+	const title = state.tableTitle || defaultTableTitle
+	return `
         <input type="text" class="input" value="${title}" />
         <div class="buttons">
             <div class="button">
