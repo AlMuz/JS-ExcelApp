@@ -10,7 +10,13 @@ const defaultState = {
 	currentStyles: defaultStyles 
 }
 
+const normalize = (state) => ({
+	...state,
+	currentStyles: defaultStyles,
+	currentText: ''
+})
+
 // if there is empty localStorage - will be selected defaultState
 export const initialState = storage('excel-state')
-	? storage('excel-state')
+	? normalize(storage('excel-state'))
 	: defaultState

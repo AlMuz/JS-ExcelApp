@@ -1,3 +1,4 @@
+import { defaultStyles } from "../../constants"
 import { toInlineStyles } from "@core/utils"
 
 const CODES = {
@@ -28,7 +29,7 @@ function createCell(state, row) {
 		const id = `${row}:${index}`
 		const width = getWidth(state.colState, index)
 		const data = getData(state.dataState, id)
-		const styles = toInlineStyles(state.stylesState[id])
+		const styles = toInlineStyles({...defaultStyles, ...state.stylesState[id]})
 		
 		return `<div
                 class="row-cell"
