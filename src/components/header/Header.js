@@ -1,7 +1,7 @@
 import { $ } from '@core/DOM'
 import { ExcelComponent } from '@core/ExcelComponent'
 import { createHeader } from './header.template'
-import * as actions from '@/redux/actions'
+import { changeTableTitle } from '@/redux/actions'
 
 export class Header extends ExcelComponent {
 	static className = 'excel__header'
@@ -18,10 +18,10 @@ export class Header extends ExcelComponent {
 		return createHeader(this.store.getState())
 	}
 
-	onInput(event) {
+	onInput(event) { 
 		const value = $(event.target).text()
 		this.$dispatch(
-			actions.changeTableTitle({
+			changeTableTitle({
 				value
 			})
 		)
