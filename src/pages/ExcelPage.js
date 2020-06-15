@@ -11,6 +11,8 @@ import { initialState } from '@/redux/initialState'
 
 export class ExcelPage extends Page {
 	getRoot() {
+		console.log(this.params);
+		
 		const storeClass = new Store(rootReducer, initialState)
 		const stateListener = debounce((state) => {
 			storage('excel-state', state)
