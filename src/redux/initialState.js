@@ -1,5 +1,5 @@
-import { storage } from '@core/utils'
 import { defaultStyles, defaultTableTitle } from '../constants'
+import { clone } from '@core/utils'
 
 const defaultState = {
 	rowState: {},
@@ -17,7 +17,6 @@ const normalize = (state) => ({
 	currentText: ''
 })
 
-// if there is empty localStorage - will be selected defaultState
-export const initialState = storage('excel-state')
-	? normalize(storage('excel-state'))
-	: defaultState
+export function normalizeInitalState(state) {
+	return state ? normalize(state) : clone(defaultState)
+}
