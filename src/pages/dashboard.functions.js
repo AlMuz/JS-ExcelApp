@@ -1,3 +1,5 @@
+import { storage } from '@core/utils'
+
 export function createRecordsTable() {
 	const keys = getAllKeys()
 	console.log(keys)
@@ -31,10 +33,13 @@ function getAllKeys() {
 	return keys
 }
 
-function toHTML() {
+function toHTML(key) {
+	const { tableTitle } = storage(key)
+	const id = key.split(':')[1]
+
 	return `
         <li class="dashboard__record">
-            <a href="#">Some title</a>
+            <a href="#excel/${id}">${tableTitle}</a>
             <strong>12.12.2021</strong>
         </li>
     `
