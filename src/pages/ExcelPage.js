@@ -11,14 +11,24 @@ import { normalizeInitalState } from '@/redux/initialState'
 
 export class ExcelPage extends Page {
 	getRoot() {
+		// if passed params from url - use them, else generate params
 		const params = this.params ? this.params : Date.now().toString()
+
+		// loading state from storage according on params
 		const state = storage(storageName(params))
+
+		// init Store class with state
 		const storeClass = new Store(rootReducer, normalizeInitalState(state))
+
+		// on state change debouncing it for some time 
+		// and update storage
 		const stateListener = debounce((state) => {
 			storage(storageName(params), state)
 		}, 300)
 
 		storeClass.subscribe(stateListener)
+
+		// loading excel components
 		this.excel = new Excel({
 			components: [Header, Toolbar, Formula, Table],
 			store: storeClass

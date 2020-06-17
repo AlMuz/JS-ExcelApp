@@ -7,16 +7,21 @@ export class Router {
 			throw new Error('Selector is not provided')
 		}
 
-		this.$placeholder = $(selector)
+		this.$wrapper = $(selector)
 		this.routes = routes
 		this.page = null
+
+		// adding 'this' to the function
 		this.handlePageChange = this.handlePageChange.bind(this)
 
 		this.init()
 	}
 
 	init() {
+		// adding event listener to hashchange
 		window.addEventListener('hashchange', this.handlePageChange)
+
+		// loading page
 		this.handlePageChange()
 	}
 
@@ -25,17 +30,24 @@ export class Router {
 	}
 
 	handlePageChange() {
+		// clearing old page before init new one
 		if (this.page) {
 			this.page.destroy()
 		}
 
-		this.$placeholder.clear()
+		// clearing wrapper where is all html
+		this.$wrapper.clear()
+
+		// according on active roue - open dashboard or excel
 		const Page = ActiveRoute.path.includes('excel')
 			? this.routes.excel
 			: this.routes.dashboard
 
+		// init page with route params
 		this.page = new Page(ActiveRoute.param)
-		this.$placeholder.append(this.page.getRoot())
+
+		// adding to wrapper html
+		this.$wrapper.append(this.page.getRoot())
 
 		this.page.afterRender()
 	}
