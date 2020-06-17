@@ -5,7 +5,7 @@ export function createRecordsTable() {
 	console.log(keys)
 
 	if (!keys.length) {
-		return `<p>There are no any created tables</p>`
+		return `<p class="dashboard__no-record">There are no any created tables</p>`
 	}
 
 	return `
