@@ -30,7 +30,7 @@ class DOM {
 	}
 
 	clear() {
-		this.html()
+		this.html('')
 		return this
 	}
 

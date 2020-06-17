@@ -3,7 +3,8 @@ import {
 	CHANGE_TEXT,
 	CHANGE_STYLES,
 	APPLY_STYLE,
-	CHANGE_TABLE_TITLE
+	CHANGE_TABLE_TITLE,
+	CHANGE_TABLE_DATE
 } from './types'
 
 // action creator
@@ -39,5 +40,11 @@ export function changeTableTitle(data) {
 	return {
 		type: CHANGE_TABLE_TITLE,
 		data
+	}
+}
+
+export function changeTableDate() {
+	return {
+		type: CHANGE_TABLE_DATE
 	}
 }

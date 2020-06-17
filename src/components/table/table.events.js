@@ -1,5 +1,5 @@
 import { $ } from '@core/DOM'
-import { range } from '@/core/utils'
+import { range } from '@core/utils'
 
 // resizing of cols and rows
 export function onMousedown(event, $root) {
