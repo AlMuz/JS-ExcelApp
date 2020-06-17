@@ -41,7 +41,7 @@ export class Excel {
 	init() {
 		// disabling right click on prod
 		if (process.env.NODE_ENV === 'production') {
-			document.addEventListener('contextmenu', preventDefault())
+			document.addEventListener('contextmenu', preventDefault)
 		}
 		
 		this.store.dispatch(changeTableDate())
@@ -53,6 +53,6 @@ export class Excel {
 		this.subscriber.unsubscribeFromStore()
 		this.components.forEach((component) => component.deInit())
 
-		document.removeEventListener('contextmenu', preventDefault())
+		document.removeEventListener('contextmenu', preventDefault)
 	}
 }
