@@ -2,7 +2,6 @@ import { storage } from '@core/utils'
 
 export function createRecordsTable() {
 	const keys = getAllKeys()
-	console.log(keys)
 
 	if (!keys.length) {
 		return `<p class="dashboard__no-record">There are no any created tables</p>`

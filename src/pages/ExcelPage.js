@@ -23,6 +23,11 @@ export class ExcelPage extends Page {
 		// on state change debouncing it for some time 
 		// and update storage
 		const stateListener = debounce((state) => {
+			// for dev showing state changes in console
+			if (process.env.NODE_ENV === 'development') {
+				console.log(state);
+			}
+
 			storage(storageName(params), state)
 		}, 300)
 

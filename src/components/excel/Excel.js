@@ -2,6 +2,7 @@ import { $ } from '@core/DOM'
 import { Emitter } from '@core/Emitter'
 import { StoreSubscriber } from '@core/StoreSubscriber'
 import { changeTableDate } from '@/redux/actions'
+import { preventDefault } from '@core/utils'
 
 export class Excel {
 	constructor(options) {
@@ -38,6 +39,11 @@ export class Excel {
 	}
 
 	init() {
+		// disabling right click on prod
+		if (process.env.NODE_ENV === 'production') {
+			document.addEventListener('contextmenu', preventDefault())
+		}
+		
 		this.store.dispatch(changeTableDate())
 		this.subscriber.subscribeComponents(this.components)
 		this.components.forEach((component) => component.init())
@@ -46,5 +52,7 @@ export class Excel {
 	destroy() {
 		this.subscriber.unsubscribeFromStore()
 		this.components.forEach((component) => component.deInit())
+
+		document.removeEventListener('contextmenu', preventDefault())
 	}
 }
