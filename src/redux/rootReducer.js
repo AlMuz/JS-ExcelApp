@@ -3,7 +3,8 @@ import {
 	CHANGE_TEXT,
 	CHANGE_STYLES,
 	APPLY_STYLE,
-	CHANGE_TABLE_TITLE
+	CHANGE_TABLE_TITLE,
+	CHANGE_TABLE_DATE
 } from './types'
 
 export function rootReducer(state, action) {
@@ -39,6 +40,12 @@ export function rootReducer(state, action) {
 			return {
 				...state,
 				[field]: action.data.value
+			}
+		case CHANGE_TABLE_DATE:
+			field = 'tableDate'
+			return {
+				...state,
+				[field]: new Date().toJSON()
 			}
 		default:
 			return state

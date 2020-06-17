@@ -34,13 +34,16 @@ function getAllKeys() {
 }
 
 function toHTML(key) {
-	const { tableTitle } = storage(key)
+	const { tableTitle, tableDate } = storage(key)
 	const id = key.split(':')[1]
 
 	return `
         <li class="dashboard__record">
             <a href="#excel/${id}">${tableTitle}</a>
-            <strong>12.12.2021</strong>
+			<strong>
+				${new Date(tableDate).toLocaleDateString()}
+				${new Date(tableDate).toLocaleTimeString()}
+			</strong>
         </li>
     `
 }
