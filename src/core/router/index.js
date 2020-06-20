@@ -1,5 +1,6 @@
 import { $ } from '@core/DOM'
 import { ActiveRoute } from './ActiveRoute'
+import { Loader } from '@/components/Loader'
 
 export class Router {
 	constructor(selector, routes) {
@@ -10,6 +11,8 @@ export class Router {
 		this.$wrapper = $(selector)
 		this.routes = routes
 		this.page = null
+
+		this.loader = new Loader()
 
 		// adding 'this' to the function
 		this.handlePageChange = this.handlePageChange.bind(this)
@@ -36,7 +39,7 @@ export class Router {
 		}
 
 		// clearing wrapper where is all html
-		this.$wrapper.clear()
+		this.$wrapper.clear().append(this.loader)
 
 		// according on active roue - open dashboard or excel
 		const Page = ActiveRoute.path.includes('excel')
@@ -48,7 +51,7 @@ export class Router {
 
 		const root = await this.page.getRoot()
 		// adding to wrapper html
-		this.$wrapper.append(root)
+		this.$wrapper.clear().append(root)
 
 		this.page.afterRender()
 	}
