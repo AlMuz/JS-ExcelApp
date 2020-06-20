@@ -29,7 +29,7 @@ export class Router {
 		window.removeEventListener('hashchange', this.handlePageChange)
 	}
 
-	handlePageChange() {
+	async handlePageChange() {
 		// clearing old page before init new one
 		if (this.page) {
 			this.page.destroy()
@@ -46,8 +46,9 @@ export class Router {
 		// init page with route params
 		this.page = new Page(ActiveRoute.param)
 
+		const root = await this.page.getRoot()
 		// adding to wrapper html
-		this.$wrapper.append(this.page.getRoot())
+		this.$wrapper.append(root)
 
 		this.page.afterRender()
 	}

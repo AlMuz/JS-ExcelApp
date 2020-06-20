@@ -9,29 +9,54 @@ import { storage, debounce } from '@core/utils'
 import { rootReducer } from '@/redux/rootReducer'
 import { normalizeInitalState } from '@/redux/initialState'
 
-export class ExcelPage extends Page {
-	getRoot() {
-		// if passed params from url - use them, else generate params
-		const params = this.params ? this.params : Date.now().toString()
+class StateProcessor {
 
-		// loading state from storage according on params
-		const state = storage(storageName(params))
+	constructor(client, delay = 300) {
+		this.client = client
+		this.listen = debounce(this.listen.bind(this), delay)
+	}
+
+	listen(state) {
+		this.client.save(state)
+	}
+
+	get() {
+		return this.client.get()
+	}
+}
+
+class LocalStorageClient {
+	constructor(name) {
+		this.name = storageName(name)
+	}
+
+	save(state) {
+		storage(this.name, state)
+		return Promise.resolve()
+	}
+
+	get() {
+		return Promise.resolve(storage(this.name))
+	}
+}
+
+export class ExcelPage extends Page {
+	constructor(param) {
+		super(param)
+
+		this.storeSub = null
+		this.processor = new StateProcessor(
+			new LocalStorageClient(this.params)
+		)
+	}
+
+	async getRoot() {
+		const state = await this.processor.get()
 
 		// init Store class with state
 		const storeClass = new Store(rootReducer, normalizeInitalState(state))
 
-		// on state change debouncing it for some time 
-		// and update storage
-		const stateListener = debounce((state) => {
-			// for dev showing state changes in console
-			if (process.env.NODE_ENV === 'development') {
-				console.log(state);
-			}
-
-			storage(storageName(params), state)
-		}, 300)
-
-		storeClass.subscribe(stateListener)
+		this.storeSub = storeClass.subscribe(this.processor.listen)
 
 		// loading excel components
 		this.excel = new Excel({
@@ -48,6 +73,7 @@ export class ExcelPage extends Page {
 
 	destroy() {
 		this.excel.destroy()
+		this.storeSub.unSubscribe()
 	}
 }
 
